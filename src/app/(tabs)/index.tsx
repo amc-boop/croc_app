@@ -1,4 +1,6 @@
-import { router, useLocalSearchParams } from 'expo-router';
+import { Image } from 'expo-image';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { setStatusBarStyle } from 'expo-status-bar';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View, type ListViewToken } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -35,6 +37,14 @@ export default function FeedScreen() {
     setActiveIndex(0);
     listRef.current?.scrollToOffset({ offset: 0, animated: false });
   }, []);
+
+  // Le feed est sombre (vidéos) : barre d'état claire uniquement sur cet écran.
+  useFocusEffect(
+    useCallback(() => {
+      setStatusBarStyle('light');
+      return () => setStatusBarStyle('dark');
+    }, []),
+  );
 
   useEffect(() => {
     if (params.mode === 'frigo' || params.mode === 'pour_toi') switchMode(params.mode);
@@ -83,7 +93,10 @@ export default function FeedScreen() {
       )}
 
       <View style={[styles.top, { paddingTop: insets.top + 8 }]} pointerEvents="box-none">
-        <Text style={styles.logo}>croc 🐊</Text>
+        <View style={styles.brand}>
+          <Image source={require('../../../assets/logo.png')} style={styles.brandLogo} />
+          <Text style={styles.logo}>croc</Text>
+        </View>
         <View style={styles.segment}>
           <Segment label="Pour toi" active={mode === 'pour_toi'} onPress={() => switchMode('pour_toi')} />
           <Segment
@@ -116,12 +129,14 @@ function Segment({ label, active, onPress }: { label: string; active: boolean; o
 const styles = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bg },
   top: { position: 'absolute', top: 0, left: 0, right: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 14 },
-  logo: { color: '#fff', fontSize: 20, fontWeight: '900', letterSpacing: -0.5, width: 80 },
+  brand: { flexDirection: 'row', alignItems: 'center', gap: 6, width: 80 },
+  brandLogo: { width: 26, height: 26, borderRadius: 8 },
+  logo: { color: '#fff', fontSize: 20, fontWeight: '900', letterSpacing: -0.5 },
   segment: { flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.45)', borderRadius: radius.pill, padding: 3 },
   segBtn: { paddingHorizontal: 14, paddingVertical: 7, borderRadius: radius.pill },
-  segBtnActive: { backgroundColor: '#fff' },
+  segBtnActive: { backgroundColor: colors.primary },
   segText: { color: '#fff', fontWeight: '700', fontSize: 13 },
-  segTextActive: { color: '#000' },
+  segTextActive: { color: '#fff' },
   filterBtn: { width: 80, alignItems: 'flex-end' },
   filterDot: { position: 'absolute', top: -4, right: -6, backgroundColor: colors.primary, borderRadius: 9, minWidth: 18, height: 18, alignItems: 'center', justifyContent: 'center' },
   filterDotText: { color: '#fff', fontSize: 11, fontWeight: '800' },

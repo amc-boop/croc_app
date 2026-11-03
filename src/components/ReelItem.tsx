@@ -26,7 +26,7 @@ function ReelItemBase({ recipe, height, active, bottomInset }: Props) {
   const openRecipe = () => router.push({ pathname: '/recipe/[id]', params: { id: recipe.id } });
 
   return (
-    <View style={{ height, backgroundColor: colors.bg }}>
+    <View style={{ height, backgroundColor: colors.media }}>
       <Pressable style={StyleSheet.absoluteFill} onPress={openRecipe} accessibilityLabel={`Voir la recette ${recipe.title}`}>
         <RecipeMedia recipe={recipe} active={active} />
       </Pressable>
