@@ -1,0 +1,45 @@
+{
+  "expo": {
+    "name": "Croc",
+    "slug": "croc",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "dark",
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSCameraUsageDescription": "Croc utilise l'appareil photo pour reconna\u00eetre les ingr\u00e9dients de ton frigo.",
+        "NSPhotoLibraryUsageDescription": "Croc acc\u00e8de \u00e0 tes photos pour analyser le contenu de ton frigo."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FF5A36",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-video",
+      "expo-image",
+      [
+        "expo-image-picker",
+        {
+          "cameraPermission": "Croc utilise l'appareil photo pour reconna\u00eetre les ingr\u00e9dients de ton frigo."
+        }
+      ]
+    ],
+    "scheme": "croc",
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}
